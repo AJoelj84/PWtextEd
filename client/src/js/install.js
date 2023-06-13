@@ -1,8 +1,9 @@
 const butInstall = document.getElementById('buttonInstall');
+let installPromptEvent;
 
 window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
-  const installPromptEvent = event;
+  installPromptEvent = event;
 });
 
 butInstall.addEventListener('click', async () => {
@@ -21,4 +22,3 @@ butInstall.addEventListener('click', async () => {
 window.addEventListener('appinstalled', (event) => {
   console.log('PWA has been installed');
 });
-
