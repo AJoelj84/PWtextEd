@@ -19,18 +19,6 @@ const pageCache = new CacheFirst({
   ],
 });
 
-const assetCache = new StaleWhileRevalidate({
-  cacheName: 'asset-cache',
-  plugins: [
-    new CacheableResponsePlugin({
-      statuses: [0, 200],
-    }),
-    new ExpirationPlugin({
-      maxAgeSeconds: 7 * 24 * 60 * 60,
-    }),
-  ],
-});
-
 warmStrategyCache({
   urls: ['/index.html', '/'],
   strategy: pageCache,
@@ -38,9 +26,15 @@ warmStrategyCache({
 
 registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 
-// Implement asset caching
+// TODO: Implement asset caching
 registerRoute(
-  ({ request }) =>
-    request.destination === 'style' || request.destination === 'script',
-  assetCache
+  ({ request }) => ["style", "script", "worker"].includes(request.destination),
+  new StaleWhileRevalidate({
+    cacheName: "asset-cache",
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+    ],
+  })
 );

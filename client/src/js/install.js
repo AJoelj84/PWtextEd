@@ -1,24 +1,21 @@
-const butInstall = document.getElementById('buttonInstall');
-let installPromptEvent;
+const butInstall = document.getElementById("buttonInstall");
 
-window.addEventListener('beforeinstallprompt', (event) => {
-  event.preventDefault();
-  installPromptEvent = event;
+window.addEventListener("beforeinstallprompt", (event) => {
+  window.deferredPrompt = event;
+  butInstall.classList.toggle("hidden", false);
 });
 
-butInstall.addEventListener('click', async () => {
-  if (installPromptEvent) {
-    installPromptEvent.prompt();
-    const choiceResult = await installPromptEvent.userChoice;
-    if (choiceResult.outcome === 'accepted') {
-      console.log('User accepted the PWA installation');
-    } else {
-      console.log('User dismissed the PWA installation');
-    }
-    installPromptEvent = null;
+butInstall.addEventListener("click", async () => {
+  const promptEvent = window.deferredPrompt;
+  if (!promptEvent) {
+    return;
   }
+  promptEvent.prompt();
+  window.deferredPrompt = null;
+
+  butInstall.classList.toggle("hidden", true);
 });
 
-window.addEventListener('appinstalled', (event) => {
-  console.log('PWA has been installed');
+window.addEventListener("appinstalled", (event) => {
+  window.deferredPrompt = null;
 });
