@@ -19,7 +19,7 @@ can be installed on the users system.
 
 [GitHubRepository](https://github.com/AJoelj84/PWtextEd)
 
-[DeployedPage]()
+[DeployedPage](https://pwtexted-7d267608b7ca.herokuapp.com/)
 
 # Contact
 
